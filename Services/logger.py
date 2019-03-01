@@ -1,0 +1,1 @@
+"""A module that provides a logger service to log bot activity"""
