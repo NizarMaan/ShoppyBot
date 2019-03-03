@@ -23,7 +23,7 @@ def main():
     checkout_profiles.append(checkout_profile_0)
 
     exclucity_bot = ExclucityBot(checkout_profiles)
-    shoe = Shoes("Air Jordan 4 Retro 'Flight Nostalgia'", 1, 12)
+    shoe = Shoes("Air Jordan 4 Retro 'Flight Nostalgia'", 1, 11)
     exclucity_bot.purchase_item(shoe)
 
 if __name__ == '__main__':

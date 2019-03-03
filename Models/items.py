@@ -19,6 +19,7 @@ class Shoes(Item):
     def __init__(self, item_name, purchase_quantity, size):
         super().__init__(item_name, purchase_quantity)
         self.validate_size(size)
+        self.size = size
     
     def validate_size(self, size):
         settings = Settings()
