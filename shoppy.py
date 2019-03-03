@@ -1,5 +1,6 @@
 """ShoppyBot written by Nizar Maan Chehaeb"""
 from Models.payment import *
+from Models.items import Shoes
 from Bots.exclucitybot import ExclucityBot
 
 def main():
@@ -20,6 +21,11 @@ def main():
         )
 
     checkout_profiles.append(checkout_profile_0)
+
+    exclucity_bot = ExclucityBot(checkout_profiles)
+
+    shoe = Shoes("Air Jordan 4 Retro 'Flight Nostalgia'", 1, 12)
+    exclucity_bot.purchase_item(shoe)
 
 if __name__ == '__main__':
     main()

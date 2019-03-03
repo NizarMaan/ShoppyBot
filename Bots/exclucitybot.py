@@ -15,7 +15,8 @@ class ExclucityBot(Bot):
 
     def purchase_item(self, item):
         """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
-        RawHTML = requests.get(self.baseURL, headers=super().get_headers())
+        RawHTML = requests.get(self.baseURL, headers=self.headers)
+        print(RawHTML)
         
     #def check_stock(self, item):
         """Parses the store's html to check the stock for a given item"""
