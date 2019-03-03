@@ -1,5 +1,5 @@
 """Defines a base class for shopping bots"""
-from Models.items import Shoes
+import requests
 
 class Bot:
     """Parent class for shopping bots that defines common properties"""
@@ -7,7 +7,8 @@ class Bot:
         self.checkout_profiles = checkout_profiles
         self.purchase_schedule = {}
         self.headers =  {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-    
+        self.session = requests.sessions.Session()
+
     def schedule_purchase(self, run_date, item):
         """Adds a purchase to the schedule dictionary"""
         if self.purchase_schedule.get(run_date) == None:
