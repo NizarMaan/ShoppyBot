@@ -3,7 +3,7 @@ from settings import Settings
 
 class Item:
     """A base class for purchasable items"""
-    def __init(self, item_name, purchase_quantity):
+    def __init__(self, item_name, purchase_quantity):
         self.validate_quantity(purchase_quantity)
         self.item_name = item_name
         self.purchase_quantity = purchase_quantity
@@ -17,15 +17,15 @@ class Item:
 class Shoes(Item):
     """A class that represents a shoe to purchase"""
     def __init__(self, item_name, purchase_quantity, size):
+        super().__init__(item_name, purchase_quantity)
         self.validate_size(size)
-        Item.__init__(self, item_name, purchase_quantity)
     
     def validate_size(self, size):
         settings = Settings()
 
-        if size > settings.max_shoe_size:
+        if size > int(settings.max_shoe_size):
             raise ValueError("Shoe size is too big.")
-        elif size < settings.min_shoe_size:
+        elif size < int(settings.min_shoe_size):
             raise ValueError("Shoe size is too small.")
         
         

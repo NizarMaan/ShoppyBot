@@ -16,3 +16,5 @@ class Bot:
             self.purchase_schedule[run_date].append(item)
     
     def add_checkout_profile(self, checkout_profile):
+        """Adds a checkout profile to the list of profiles"""
+        self.checkout_profiles.append(checkout_profile)
