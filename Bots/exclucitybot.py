@@ -13,6 +13,9 @@ class ExclucityBot(Bot):
         settings = Settings()   
         self.baseURL = settings.shopify_store_urls[0]
 
-    #def purchase_item(self, item):
+    def purchase_item(self, item):
+        """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
+        RawHTML = requests.get(self.baseURL, headers=super().get_headers())
         
     #def check_stock(self, item):
+        """Parses the store's html to check the stock for a given item"""
