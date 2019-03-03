@@ -15,7 +15,7 @@ class ExclucityBot(Bot):
 
     def purchase_item(self, item):
         """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
-        rawHTML = requests.get(self.baseURL + "/collections/men-footwear", headers=self.headers)
+        rawHTML = self.session.get(self.baseURL + "/collections/men-footwear", headers=self.headers)
         page = bs4.BeautifulSoup(rawHTML.text, "lxml")
         product_titles = page.find_all("h4", attrs={"class":"product-item__title"})
 
@@ -26,14 +26,17 @@ class ExclucityBot(Bot):
 
             if product_name == item.item_name:
                 product_url = product_title.find("a")["href"]
-                product_page = bs4.BeautifulSoup(requests.get(self.baseURL+product_url, headers=self.headers).text, "lxml")
+                product_page = bs4.BeautifulSoup(self.session.get(self.baseURL+product_url, headers=self.headers).text, "lxml")
                 break
 
         if product_page == None:
             raise(ValueError("Item " + item.item_name + " was not found."))
         
         self.check_stock(product_page, item)
-    
+        product_variant_id = self.get_product_variant_id(product_page)
+
+        print(product_variant_id)
+
     def check_stock(self, product_page, item):
         """Parses the product's html page to check the stock for a given item"""
         in_stock = True
@@ -49,3 +52,24 @@ class ExclucityBot(Bot):
             raise(ValueError("Item " + item.item_name + " of size " + str(item.size) + " is not in stock"))
 
         return in_stock
+    
+    def get_product_variant_id(self, product_page):
+        """Finds the product's variant id from the given product's html page"""
+        product_variant_id_html = product_page.find_all("option", attrs={"selected": "selected"})
+        product_variant_id = None
+
+        if len(product_variant_id_html) > 0:
+            for element in product_variant_id_html:
+                if element.has_attr("data-sku"):
+                    product_variant_id = element["value"]
+
+        if product_variant_id == None:
+            raise(ValueError("Unable to parse HTML to find item's variant id."))
+
+        return product_variant_id
+
+    def add_to_cart(self, product_variant_id):
+        """Adds the product to the bot's session's cart"""
+        
+
+    #def checkout(self):
