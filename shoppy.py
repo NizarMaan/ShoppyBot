@@ -1,11 +1,9 @@
 """ShoppyBot written by Nizar Maan Chehaeb"""
 from Models.payment import *
-from settings import Settings
+from Bots.exclucitybot import ExclucityBot
 
 def main():
     """ShoppyBot entry point"""
-    settings = Settings()
-
     checkout_profiles = []
 
     payment_option_0 = PaymentOption(
