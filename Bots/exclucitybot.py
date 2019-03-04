@@ -33,12 +33,13 @@ class ExclucityBot(Bot):
             raise(ValueError("Item " + item.item_name + " was not found."))
         
         self.check_stock(product_page, item)
+
         product_variant_id = self.get_product_variant_id(product_page)
 
-        print(product_variant_id)
+        self.add_to_cart(product_variant_id)
 
     def check_stock(self, product_page, item):
-        """Parses the product's html page to check the stock for a given item"""
+        """Parses the given item's html page to check the stock"""
         in_stock = True
         size_option_html = product_page.find_all("option", attrs={"value":item.size})
  
@@ -70,6 +71,16 @@ class ExclucityBot(Bot):
 
     def add_to_cart(self, product_variant_id):
         """Adds the product to the bot's session's cart"""
-        
+        cart_endpoint = "https://shop.exclucitylife.com/cart/add.js"
+
+        payload = {
+           "id": product_variant_id
+        }
+
+        response = requests.post(cart_endpoint, payload)
+
+        print(response.text)
+        self.session.close()
 
     #def checkout(self):
+        """Goes through the checkout process for the bot's session"""
