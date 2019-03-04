@@ -6,8 +6,9 @@ class Bot:
     def __init__(self, checkout_profiles):
         self.checkout_profiles = checkout_profiles
         self.purchase_schedule = {}
-        self.headers =  {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+        self.headers =  {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36', 'Connection': 'keep-alive'}
         self.session = requests.sessions.Session()
+        self.session.headers = self.headers
 
     def schedule_purchase(self, run_date, item):
         """Adds a purchase to the schedule dictionary"""

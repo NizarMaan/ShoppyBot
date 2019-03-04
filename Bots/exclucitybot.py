@@ -1,10 +1,12 @@
 """Shopping bot for ExclucityLife Shopify e-store"""
 import webbrowser
 import requests
+import selenium
 import bs4
 from Bots.bot import Bot
 from Models.items import Shoes
 from settings import Settings
+from selenium import webdriver
 
 class ExclucityBot(Bot):
     """The class that defines the ExclucityBot's mechanics"""
@@ -36,7 +38,12 @@ class ExclucityBot(Bot):
 
         product_variant_id = self.get_product_variant_id(product_page)
 
-        self.add_to_cart(product_variant_id)
+        self.add_to_cart(product_variant_id, item.size)
+
+        self.session.close()
+
+        browser = selenium.webdriver.Chrome("./Resources/chromedriver.exe")
+        browser.get(self.baseURL + "/collections/men-footwear")
 
     def check_stock(self, product_page, item):
         """Parses the given item's html page to check the stock"""
@@ -69,18 +76,20 @@ class ExclucityBot(Bot):
 
         return product_variant_id
 
-    def add_to_cart(self, product_variant_id):
+    def add_to_cart(self, product_variant_id, size):
         """Adds the product to the bot's session's cart"""
         cart_endpoint = "https://shop.exclucitylife.com/cart/add.js"
 
         payload = {
-           "id": product_variant_id
+           "id": product_variant_id,
+           "variant_title": size,
+           "variant_options": [size]
         }
 
         response = requests.post(cart_endpoint, payload)
 
-        print(response.text)
-        self.session.close()
+        if response.status_code != 200:
+            raise ValueError("Error adding product to cart:\n\t" + response.text)
 
-    #def checkout(self):
+    def checkout(self):
         """Goes through the checkout process for the bot's session"""
