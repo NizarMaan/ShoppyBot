@@ -7,6 +7,7 @@ from Bots.bot import Bot
 from Models.items import Shoes
 from settings import Settings
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 class ExclucityBot(Bot):
     """The class that defines the ExclucityBot's mechanics"""
@@ -42,8 +43,11 @@ class ExclucityBot(Bot):
 
         self.session.close()
 
-        browser = selenium.webdriver.Chrome("./Resources/chromedriver.exe")
+        browser_options = Options()
+        #browser_options.headless = True
+        browser = selenium.webdriver.Chrome("./Resources/chromedriver.exe", chrome_options=browser_options)
         browser.get(self.baseURL + "/collections/men-footwear")
+        
 
     def check_stock(self, product_page, item):
         """Parses the given item's html page to check the stock"""
