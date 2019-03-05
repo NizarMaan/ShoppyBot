@@ -1,14 +1,17 @@
 """Defines a base class for shopping bots"""
-import requests
+import selenium
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 class Bot:
     """Parent class for shopping bots that defines common properties"""
     def __init__(self, checkout_profiles):
         self.checkout_profiles = checkout_profiles
         self.purchase_schedule = {}
-        self.headers =  {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36', 'Connection': 'keep-alive'}
-        self.session = requests.sessions.Session()
-        self.session.headers = self.headers
+        browser_options = Options()
+        browser_options.headless = True
+        self.browser = selenium.webdriver.Chrome("./Resources/chromedriver.exe", chrome_options=browser_options)
+        self.browser.implicitly_wait(5) #Wait 5 seconds for elements to load if an element is not found.
 
     def schedule_purchase(self, run_date, item):
         """Adds a purchase to the schedule dictionary"""

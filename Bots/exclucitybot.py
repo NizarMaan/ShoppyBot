@@ -1,8 +1,5 @@
 """Shopping bot for ExclucityLife Shopify e-store"""
-import webbrowser
-import requests
 import selenium
-import bs4
 from Bots.bot import Bot
 from Models.items import Shoes
 from settings import Settings
@@ -18,55 +15,50 @@ class ExclucityBot(Bot):
 
     def purchase_item(self, item):
         """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
-        rawHTML = self.session.get(self.baseURL + "/collections/men-footwear", headers=self.headers)
-        page = bs4.BeautifulSoup(rawHTML.text, "lxml")
-        product_titles = page.find_all("h4", attrs={"class":"product-item__title"})
-
-        product_page = None
-
-        for product_title in product_titles:
-            product_name = product_title.find("a").contents[0]
-
-            if product_name == item.item_name:
-                product_url = product_title.find("a")["href"]
-                product_page = bs4.BeautifulSoup(self.session.get(self.baseURL+product_url, headers=self.headers).text, "lxml")
-                break
-
-        if product_page == None:
-            raise(ValueError("Item " + item.item_name + " was not found."))
+        self.browser.get(self.baseURL + "/collections/men-footwear")
+        self.add_to_cart(item)
+        self.checkout()
         
-        self.check_stock(product_page, item)
-
-        product_variant_id = self.get_product_variant_id(product_page)
-
-        self.add_to_cart(product_variant_id, item.size)
-
-        self.session.close()
-
-        browser_options = Options()
-        #browser_options.headless = True
-        browser = selenium.webdriver.Chrome("./Resources/chromedriver.exe", chrome_options=browser_options)
-        browser.get(self.baseURL + "/collections/men-footwear")
-        
-
-    def check_stock(self, product_page, item):
-        """Parses the given item's html page to check the stock"""
+    def check_stock(self, item):
+        """Parses the given item's html page to check the stock for the desired size"""
         in_stock = True
-        size_option_html = product_page.find_all("option", attrs={"value":item.size})
- 
-        if len(size_option_html) > 0:
-            if size_option_html[0].has_attr("disabled"):
-                in_stock = False
-        else:
+        size_option_element = None
+        size_disabled = None
+
+        try:
+            size_option_element = self.browser.find_element_by_xpath(".//option[text()=\"" + str(item.size) + "\"]")
+        except:
             in_stock = False
+        
+        if size_option_element != None:            
+            size_disabled = size_option_element.get_attribute("disabled")  
+            if size_disabled == None:
+                in_stock = True
 
-        if(in_stock == False):
-            raise(ValueError("Item " + item.item_name + " of size " + str(item.size) + " is not in stock"))
+        if in_stock == False:
+            raise(ValueError("Item " + item.item_name + " of size " + str(item.size) + " is not in stock or was not found."))
+        
+    def add_to_cart(self, item):
+        """Adds the product to the bot's Selenium session cart"""
+        product_anchor_path = ".//a[text()=\"" + item.item_name + "\"]"
+        product_anchor = self.browser.find_element_by_xpath(product_anchor_path)
+        product_url = product_anchor.get_attribute("href")
 
-        return in_stock
-    
+        self.browser.get(product_url)
+
+        self.check_stock(item)
+
+        self.browser.find_element_by_class_name("product__add-to-cart").submit()
+
+    def checkout(self):
+        """Goes through the checkout process for the bot's Selenium session"""
+        self.browser.find_element_by_class_name("cart__checkout-button").click()
+        print(self.browser.find_element_by_name("checkout[email]").get_attribute("id"))
+
+    #deprecated/unused methods
+    """
     def get_product_variant_id(self, product_page):
-        """Finds the product's variant id from the given product's html page"""
+        ""Finds the product's variant id from the given product's html page"
         product_variant_id_html = product_page.find_all("option", attrs={"selected": "selected"})
         product_variant_id = None
 
@@ -81,7 +73,7 @@ class ExclucityBot(Bot):
         return product_variant_id
 
     def add_to_cart(self, product_variant_id, size):
-        """Adds the product to the bot's session's cart"""
+        ""Adds the product to the bot's session's cart""
         cart_endpoint = "https://shop.exclucitylife.com/cart/add.js"
 
         payload = {
@@ -90,10 +82,8 @@ class ExclucityBot(Bot):
            "variant_options": [size]
         }
 
-        response = requests.post(cart_endpoint, payload)
+        response = self.session.post(cart_endpoint, payload)
 
         if response.status_code != 200:
             raise ValueError("Error adding product to cart:\n\t" + response.text)
-
-    def checkout(self):
-        """Goes through the checkout process for the bot's session"""
+    """
