@@ -9,6 +9,7 @@ class Settings:
         load_dotenv()
         self.max_shoe_size = os.environ['MAX_SHOE_SIZE']
         self.min_shoe_size = os.environ['MIN_SHOE_SIZE']
+        self.max_purchase_quantity = os.environ['MAX_PURCHASE_QUANTITY']
         self.shopify_store_urls = json.loads(os.environ['SHOPIFY_STORE_URLS'])
         self.other_store_urls = json.loads(os.environ['OTHER_STORE_URLS'])
 

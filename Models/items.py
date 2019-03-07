@@ -9,9 +9,11 @@ class Item:
         self.purchase_quantity = purchase_quantity
     
     def validate_quantity(self, purchase_quantity):
+        settings = Settings()
+
         if purchase_quantity < 0:
             raise ValueError("Purchase quantity cannot be negative.")
-        elif purchase_quantity > 10:
+        elif purchase_quantity > int(settings.max_purchase_quantity):
             raise ValueError("Purchase quantity cannot be greater than ten (10).")
 
 class Shoes(Item):
