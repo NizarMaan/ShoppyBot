@@ -52,8 +52,40 @@ class ExclucityBot(Bot):
 
     def checkout(self):
         """Goes through the checkout process for the bot's Selenium session"""
+        checkout_profile = self.checkout_profiles[0]
+
         self.browser.find_element_by_class_name("cart__checkout-button").click()
-        print(self.browser.find_element_by_name("checkout[email]").get_attribute("id"))
+
+        email_field = self.browser.find_element_by_name("checkout[email]")
+        first_name_field = self.browser.find_element_by_name("checkout[shipping_address][first_name]")
+        last_name_field = self.browser.find_element_by_name("checkout[shipping_address][last_name]")
+        address_field = self.browser.find_element_by_name("checkout[shipping_address][address1]")
+        city_field = self.browser.find_element_by_name("checkout[shipping_address][city]")
+       
+        country_dropdown = self.browser.find_element_by_xpath("//option[@data-code=\"" 
+            + checkout_profile.billing_address.country + "\"]")
+
+        zip_field = self.browser.find_element_by_name("checkout[shipping_address][zip]")
+        phone_field = self.browser.find_element_by_name("checkout[shipping_address][phone]")
+
+        submit_shipping_address = self.browser.find_element_by_class_name("step__footer__continue-btn")
+
+        email_field.send_keys(checkout_profile.shipping_address.email)
+        first_name_field.send_keys(checkout_profile.shipping_address.first_name)
+        last_name_field.send_keys(checkout_profile.shipping_address.last_name)
+        address_field.send_keys(checkout_profile.shipping_address.street)
+        city_field.send_keys(checkout_profile.shipping_address.city)
+        country_dropdown.click()
+
+        #Province/state dropdown only appears in the DOM after a country is selected
+        province_dropdown = self.browser.find_element_by_xpath("//option[@data-code=\"" 
+            + checkout_profile.shipping_address.province + "\"]")
+
+        province_dropdown.click()
+        zip_field.send_keys(checkout_profile.shipping_address.postal_code)
+        phone_field.send_keys(checkout_profile.shipping_address.phone_number)
+
+        submit_shipping_address.click()
 
     #deprecated/unused methods
     """

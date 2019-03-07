@@ -50,9 +50,9 @@ class PaymentOption:
 
 class CheckoutProfile:
     """Represents a set of normally required checkout info"""
-    def __init__(self, credit_card, delivery_address, billing_address, payment_option):
+    def __init__(self, credit_card, shipping_address, billing_address, payment_option):
         self.credit_card = credit_card
-        self.delivery_address = delivery_address
+        self.shipping_address = shipping_address
         self.billing_address = billing_address
         self.payment_option = payment_option
 
