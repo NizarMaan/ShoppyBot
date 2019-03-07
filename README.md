@@ -1,2 +1,2 @@
 # ShoppyBot
-A suite of bots for an a variety of online stores.
+A suite of bots for a variety of online stores.
