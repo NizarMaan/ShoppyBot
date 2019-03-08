@@ -1,5 +1,6 @@
 """Shopping bot for ExclucityLife Shopify e-store"""
 import selenium
+import time
 from Bots.bot import Bot
 from Models.items import Shoes
 from settings import Settings
@@ -15,10 +16,16 @@ class ExclucityBot(Bot):
 
     def purchase_item(self, item):
         """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
+        start_time = time.time()
+
         self.browser.get(self.baseURL + "/collections/men-footwear")
         self.add_to_cart(item)
         self.checkout()
         
+        elapsed_time = time.time() - start_time
+
+        print("Checkout completed in: " + str(elapsed_time) + " seconds.")
+
     def check_stock(self, item):
         """Parses the given item's html page to check the stock for the desired size"""
         in_stock = True
