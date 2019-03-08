@@ -6,6 +6,7 @@ from Models.items import Shoes
 from settings import Settings
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
 
 class ExclucityBot(Bot):
     """The class that defines the ExclucityBot's mechanics"""
@@ -60,39 +61,54 @@ class ExclucityBot(Bot):
     def checkout(self):
         """Goes through the checkout process for the bot's Selenium session"""
         checkout_profile = self.checkout_profiles[0]
+        actions = ActionChains(self.browser)
 
         self.browser.find_element_by_class_name("cart__checkout-button").click()
 
         email_field = self.browser.find_element_by_name("checkout[email]")
+        actions.move_to_element(email_field).send_keys(checkout_profile.shipping_address.email)
+        #email_field.send_keys(checkout_profile.shipping_address.email)
+        actions.perform()
+
         first_name_field = self.browser.find_element_by_name("checkout[shipping_address][first_name]")
+        first_name_field.send_keys(checkout_profile.shipping_address.first_name)
+
         last_name_field = self.browser.find_element_by_name("checkout[shipping_address][last_name]")
+        last_name_field.send_keys(checkout_profile.shipping_address.last_name)
+
         address_field = self.browser.find_element_by_name("checkout[shipping_address][address1]")
+        address_field.send_keys(checkout_profile.shipping_address.street)
+
         city_field = self.browser.find_element_by_name("checkout[shipping_address][city]")
+        city_field.send_keys(checkout_profile.shipping_address.city)
        
         country_dropdown = self.browser.find_element_by_xpath("//option[@data-code=\"" 
             + checkout_profile.billing_address.country + "\"]")
-
-        zip_field = self.browser.find_element_by_name("checkout[shipping_address][zip]")
-        phone_field = self.browser.find_element_by_name("checkout[shipping_address][phone]")
-
-        submit_shipping_address = self.browser.find_element_by_class_name("step__footer__continue-btn")
-
-        email_field.send_keys(checkout_profile.shipping_address.email)
-        first_name_field.send_keys(checkout_profile.shipping_address.first_name)
-        last_name_field.send_keys(checkout_profile.shipping_address.last_name)
-        address_field.send_keys(checkout_profile.shipping_address.street)
-        city_field.send_keys(checkout_profile.shipping_address.city)
         country_dropdown.click()
 
         #Province/state dropdown only appears in the DOM after a country is selected
-        province_dropdown = self.browser.find_element_by_xpath("//option[@data-code=\"" 
+        province_dropdown = self.browser.find_element_by_xpath("//option[@value=\"" 
             + checkout_profile.shipping_address.province + "\"]")
-
         province_dropdown.click()
+
+        zip_field = self.browser.find_element_by_name("checkout[shipping_address][zip]")
         zip_field.send_keys(checkout_profile.shipping_address.postal_code)
+
+        phone_field = self.browser.find_element_by_name("checkout[shipping_address][phone]")
         phone_field.send_keys(checkout_profile.shipping_address.phone_number)
 
+        submit_shipping_address = self.browser.find_element_by_class_name("step__footer__continue-btn")
         submit_shipping_address.click()
+
+        to_payment_method = None
+        
+        to_payment_method = self.browser.find_element_by_xpath("//button[@data-trekkie-id='continue_to_payment_method_button']")
+        disabled = to_payment_method.get_attribute("disabled")
+
+        if disabled != None:
+            raise ValueError("This item does not ship to your location.")
+
+        to_payment_method.click()
 
     #deprecated/unused methods
     """
