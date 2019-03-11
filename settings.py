@@ -3,8 +3,10 @@ import os
 import json
 from dotenv import load_dotenv
 
+
 class Settings:
     """A class to initialize and access environment settings."""
+
     def __init__(self):
         load_dotenv()
         self.max_shoe_size = os.environ['MAX_SHOE_SIZE']
