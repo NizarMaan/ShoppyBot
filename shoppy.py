@@ -11,7 +11,7 @@ def main():
     payment_option_0 = PaymentOption(
         Address("Christopher", "Cunanan", "110 Beechwood Avenue",
                 "Mount Vernon", "AB", "CA", "T3H 0L4", "9143146010", "kevinudasco@exqtrading.com"),
-        CreditCard("5466042028174543", "3/23", "332")
+        CreditCard("5466 0420 2817 4543", "03/99", "999")
     )
 
     checkout_profile_0 = CheckoutProfile(

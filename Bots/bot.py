@@ -1,8 +1,12 @@
 """Defines a base class for shopping bots"""
 import selenium
 import random
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 class Bot:
@@ -12,7 +16,7 @@ class Bot:
         self.checkout_profiles = checkout_profiles
         self.purchase_schedule = {}
         browser_options = Options()
-        #browser_options.headless = True
+        # browser_options.headless = True
         self.browser = selenium.webdriver.Chrome(
             "./Resources/chromedriver.exe", chrome_options=browser_options)
         # Wait 5 seconds for elements to load if an element is not found.
@@ -33,3 +37,14 @@ class Bot:
         """Returns a random checkout profile from the list of checkout profiles"""
         index = random.randint(0, len(self.checkout_profiles))
         return self.checkout_profiles[index]
+
+    def send_keys_to_element_in_iframe(self, xpath_to_iframe, xpath_to_element, keys_to_send):
+        """Finds an element within an iframe and sends it some keys then returns to the default page content"""
+
+        WebDriverWait(self.browser, 5).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH,
+                                                                                        xpath_to_iframe)))
+        WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH,
+                                                                         xpath_to_element))).send_keys(keys_to_send)
+
+        self.browser.switch_to.default_content()
+        time.sleep(0.05)
