@@ -2,6 +2,7 @@
 from Models.payment import *
 from Models.items import Shoes
 from Bots.exclucitybot import ExclucityBot
+from Bots.yeezybot import YeezyBot
 
 
 def main():
@@ -23,10 +24,15 @@ def main():
 
     checkout_profiles.append(checkout_profile_0)
 
-    exclucity_bot = ExclucityBot(checkout_profiles)
-    shoe = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'",
-                 purchase_quantity=1, size=11)
-    exclucity_bot.purchase_item(shoe)
+    #exclucity_bot = ExclucityBot(checkout_profiles)
+    # shoe_exlucity = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'",
+    # purchase_quantity=1, size=11)
+    # exclucity_bot.purchase_item(shoe_exlucity)
+
+    shoe_yeezy = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'",
+                       purchase_quantity=1, size=11)
+    yeezy_bot = YeezyBot(checkout_profiles)
+    yeezy_bot.purchase_item(shoe_yeezy)
 
 
 if __name__ == '__main__':

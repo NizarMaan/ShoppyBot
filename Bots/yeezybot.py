@@ -23,7 +23,7 @@ class YeezyBot(Bot):
         """Parses the Exlucity online store HTML to navigate to the item and purchase it"""
         start_time = time.time()
 
-        self.browser.get(self.baseURL + "/collections/men-footwear")
+        self.browser.get(self.baseURL)
         self.add_to_cart(item)
         self.checkout()
 
