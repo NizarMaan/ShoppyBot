@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 
 
 class ExclucityBot(Bot):
-    """The class that defines the ExclucityBot's mechanics"""
+    """Initializes a bot for the ExclucityLife Shopify estore"""
 
     def __init__(self, checkout_profiles):
         super().__init__(checkout_profiles)
