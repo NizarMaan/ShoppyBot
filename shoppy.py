@@ -29,8 +29,8 @@ def main():
     # purchase_quantity=1, size=11)
     # exclucity_bot.purchase_item(shoe_exlucity)
 
-    shoe_yeezy = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'",
-                       purchase_quantity=1, size=11)
+    shoe_yeezy = Shoes(item_name="WOMENS THICK SUEDE DESERT BOOT",
+                       purchase_quantity=1, size=40, country_code="EU")
     yeezy_bot = YeezyBot(checkout_profiles)
     yeezy_bot.purchase_item(shoe_yeezy)
 
