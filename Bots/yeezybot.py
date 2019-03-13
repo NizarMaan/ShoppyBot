@@ -58,8 +58,24 @@ class YeezyBot(Bot):
         """Adds the given item to the bot's Selenium session cart"""
         self.check_stock(item)
 
-        self.browser.find_element_by_class_name("K__button").submit()
+        add_to_cart_btn = self.browser.find_element_by_class_name("K__button")
+
+        for i in range(0, item.purchase_quantity):
+            add_to_cart_btn.submit()
+            time.sleep(0.3)
 
     def checkout(self):
         """Goes through the checkout process for the bot's Selenium session"""
         self.browser.find_element_by_name("checkout").click()
+
+        limited_stock_btn_continue = None
+
+        try:
+            limited_stock_btn_continue = self.browser.find_element_by_name("commit")
+            limited_stock = True
+        except:
+            limited_stock = False
+        
+        if limited_stock == True:
+            print("Purchase quantity was modified as there is limited stock.")
+            limited_stock_btn_continue.click()
