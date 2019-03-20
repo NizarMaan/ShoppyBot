@@ -3,16 +3,10 @@ from Models.payment import *
 from Models.items import Shoes
 from Bots.exclucitybot import ExclucityBot
 from Bots.yeezybot import YeezyBot
-from tkinter import *
 
 
 def main():
     """ShoppyBot entry point"""
-    root = Tk()
-    topFrame = Frame(root)
-
-    root.mainloop()
-
     checkout_profiles = []
 
     payment_option_0 = PaymentOption(
@@ -32,12 +26,12 @@ def main():
 
     #exclucity_bot = ExclucityBot(checkout_profiles)
     #shoe_exlucity = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'", purchase_quantity=1, size=11, country_code = "US")
-    # exclucity_bot.purchase_item(shoe_exlucity)
+    #exclucity_bot.purchase_item(shoe_exlucity)
 
-    shoe_yeezy = Shoes(item_name="MENS THICK SUEDE DESERT BOOT",
-                       purchase_quantity=10, size=45, country_code="EU")
-    yeezy_bot = YeezyBot(checkout_profiles)
-    yeezy_bot.purchase_item(shoe_yeezy)
+    #shoe_yeezy = Shoes(item_name="MENS THICK SUEDE DESERT BOOT",
+    #                   purchase_quantity=10, size=45, country_code="EU")
+    #yeezy_bot = YeezyBot(checkout_profiles)
+    #yeezy_bot.purchase_item(shoe_yeezy)
 
 
 if __name__ == '__main__':
