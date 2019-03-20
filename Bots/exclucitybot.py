@@ -132,6 +132,7 @@ class ExclucityBot(Bot):
 
         time.sleep(0.1)
 
+        # Check whether payment method is available, if not, no shipping to given address
         to_payment_method = None
 
         to_payment_method = self.browser.find_element_by_class_name(

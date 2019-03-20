@@ -25,12 +25,11 @@ def main():
     checkout_profiles.append(checkout_profile_0)
 
     #exclucity_bot = ExclucityBot(checkout_profiles)
-    # shoe_exlucity = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'",
-    # purchase_quantity=1, size=11)
-    # exclucity_bot.purchase_item(shoe_exlucity)
+    #shoe_exlucity = Shoes(item_name="Air Jordan 4 Retro 'Flight Nostalgia'", purchase_quantity=1, size=11, country_code = "US")
+    #exclucity_bot.purchase_item(shoe_exlucity)
 
-    shoe_yeezy = Shoes(item_name="WOMENS THICK SUEDE DESERT BOOT",
-                       purchase_quantity=1, size=40, country_code="EU")
+    shoe_yeezy = Shoes(item_name="MENS THICK SUEDE DESERT BOOT",
+                       purchase_quantity=10, size=45, country_code="EU")
     yeezy_bot = YeezyBot(checkout_profiles)
     yeezy_bot.purchase_item(shoe_yeezy)
 
