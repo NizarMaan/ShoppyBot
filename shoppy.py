@@ -11,7 +11,7 @@ def main():
     root = Tk()
     topFrame = Frame(root)
 
-    #root.mainloop()
+    root.mainloop()
 
     checkout_profiles = []
 
