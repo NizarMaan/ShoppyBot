@@ -4,4 +4,4 @@ import tkinter as Tk
 class BotController():
     """Controls Bot views"""
     def __init__(self):
-                
+        print("nothing here yet...")        
